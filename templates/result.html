@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AI Resume Screening Dashboard</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='style.css') }}">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<!-- Animated Background -->
+
+<div class="background">
+
+<div class="circle two"></div>
+
+<div class="circle one"></div>
+
+<div class="circle four"></div>
+
+</div>
+
+<div class="container">
+
+<!-- ================= HEADER ================= -->
+
+<header class="header">
+
+<div>
+
+<h3 class="logo">
+
+<i class="fa-solid fa-brain"></i>
+
+AI Resume Screening
+
+</h3>
+
+<h1 class="title">
+
+Candidate Analytics Dashboard
+
+</h1>
+
+<p class="subtitle">
+
+AI Powered Resume Screening & Candidate Analytics System
+
+</p>
+
+</div>
+
+<div>
+
+{% if prediction=="Shortlisted" %}
+
+<span class="status-badge success">
+
+<i class="fa-solid fa-circle-check"></i>
+
+Shortlisted
+
+</span>
+
+{% else %}
+
+<span class="status-badge reject">
+
+<i class="fa-solid fa-circle-xmark"></i>
+
+Not Shortlisted
+
+</span>
+
+{% endif %}
+
+</div>
+
+</header>
+
+<!-- ================= KPI ================= -->
+
+<section class="analytics">
+
+<div class="analytics-card">
+
+<i class="fa-solid fa-star"></i>
+
+<h4>Resume Score</h4>
+
+<h2>{{ score }}%</h2>
+
+</div>
+
+<div class="analytics-card">
+
+<i class="fa-solid fa-bullseye"></i>
+
+<h4>ATS Score</h4>
+
+<h2>{{ ats_score }}%</h2>
+
+</div>
+
+<div class="analytics-card">
+
+<i class="fa-solid fa-chart-line"></i>
+
+<h4>Skill Match</h4>
+
+<h2>{{ skill_percentage }}%</h2>
+
+</div>
+
+<div class="analytics-card">
+
+<i class="fa-solid fa-folder-open"></i>
+
+<h4>Projects</h4>
+
+<h2>{{ project_count }}</h2>
+
+</div>
+
+</section>
+
+<!-- ================= MAIN DASHBOARD ================= -->
+
+<div class="dashboard">
+
+<!-- LEFT SIDE -->
+
+<div class="left-side">
+
+<!-- Candidate Performance -->
+
+<div class="glass-card">
+
+<h2>
+
+<i class="fa-solid fa-chart-line"></i>
+
+Candidate Performance
+
+</h2>
+
+<div class="graph-box">
+
+<canvas id="lineChart"></canvas>
+
+</div>
+
+</div>
+
+<!-- ================= CANDIDATE SUMMARY ================= -->
+
+<div class="glass-card">
+
+<h2>
+
+<i class="fa-solid fa-clipboard-list"></i>
+
+Candidate Summary
+
+</h2>
+
+<table class="profile-table">
+
+<tr>
+<td>Prediction</td>
+<td>{{ prediction }}</td>
+</tr>
+
+<tr>
+<td>Projects</td>
+<td>{{ project_count }}</td>
+</tr>
+
+<tr>
+<td>Certifications</td>
+<td>{{ certifications }}</td>
+</tr>
+
+<tr>
+<td>GitHub</td>
+<td>{{ github }}</td>
+</tr>
+
+<tr>
+<td>Uploaded</td>
+<td>{{ upload_time }}</td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- RIGHT SIDE STARTS -->
+
+<div class="right-side">
+<!-- AI Recommendation -->
+
+<div class="glass-card">
+
+<h2>
+
+<i class="fa-solid fa-lightbulb"></i>
+
+AI Recommendation
+
+</h2>
+
+<ul class="tips">
+
+<li>✔ Resume Parsed Successfully</li>
+
+<li>✔ Education Verified</li>
+
+<li>✔ Skills Extracted</li>
+
+<li>✔ ATS Compatible Resume</li>
+
+<li>✔ AI Prediction Generated</li>
+
+</ul>
+
+{% if prediction=="Shortlisted" %}
+
+<div class="success-card">
+
+<h3>
+
+<i class="fa-solid fa-circle-check"></i>
+
+Recommended for Interview
+
+</h3>
+
+<p>
+
+Candidate profile satisfies the required eligibility criteria.
+
+</p>
+
+</div>
+
+{% else %}
+
+<div class="reject-card">
+
+<h3>
+
+<i class="fa-solid fa-triangle-exclamation"></i>
+
+Needs Improvement
+
+</h3>
+
+<p>
+
+Improve resume quality and technical skills before applying.
+
+</p>
+
+</div>
+
+{% endif %}
+
+</div>
+
+ <!-- ================= CANDIDATE PROFILE ================= -->
+
+<div class="glass-card">
+
+    <h2>
+        <i class="fa-solid fa-user"></i>
+        Candidate Profile
+    </h2>
+
+    <table class="profile-table">
+
+        <tr>
+            <td><i class="fa-solid fa-user"></i> Name</td>
+            <td>{{ name }}</td>
+        </tr>
+
+        <tr>
+            <td><i class="fa-solid fa-envelope"></i> Email</td>
+            <td>{{ email }}</td>
+        </tr>
+
+        <tr>
+            <td><i class="fa-solid fa-phone"></i> Phone</td>
+            <td>{{ phone }}</td>
+        </tr>
+
+        <tr>
+            <td><i class="fa-solid fa-graduation-cap"></i> Education</td>
+            <td>{{ education }}</td>
+        </tr>
+
+        <tr>
+            <td><i class="fa-solid fa-briefcase"></i> Experience</td>
+            <td>{{ experience }}</td>
+        </tr>
+
+    </table>
+
+</div>
+
+<!-- ================= AI DECISION ================= -->
+
+<div class="glass-card">
+
+    <h2>
+        <i class="fa-solid fa-robot"></i>
+        AI Decision
+    </h2>
+
+    {% if prediction=="Shortlisted" %}
+
+    <div class="success-card">
+
+        <h1>🎉 SHORTLISTED</h1>
+
+        <p>
+
+            The candidate satisfies the AI screening criteria and is
+            recommended for the interview process.
+
+        </p>
+
+    </div>
+
+    {% else %}
+
+    <div class="reject-card">
+
+        <h1>❌ NOT SHORTLISTED</h1>
+
+        <p>
+
+            Candidate should improve technical skills, resume quality,
+            certifications and project experience.
+
+        </p>
+
+    </div>
+
+    {% endif %}
+</div>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- ================= BUTTONS ================= -->
+
+<div class="button-group">
+
+<a href="/" class="btn">
+
+<i class="fa-solid fa-upload"></i>
+
+Upload Resume
+
+</a>
+
+<a href="/dashboard" class="btn">
+
+<i class="fa-solid fa-chart-column"></i>
+
+Dashboard
+
+</a>
+
+<button class="btn" onclick="window.print()">
+
+<i class="fa-solid fa-print"></i>
+
+Print
+
+</button>
+
+<button class="btn" onclick="downloadPDF()">
+
+<i class="fa-solid fa-download"></i>
+
+Download
+
+</button>
+
+</div>
+
+<script>
+
+function downloadPDF(){
+    window.print();
+}
+
+/* ===========================
+   Candidate Performance Chart
+=========================== */
+
+new Chart(document.getElementById("lineChart"),{
+
+type:"line",
+
+data:{
+
+labels:["Resume","Skills","Projects","Experience","ATS"],
+
+datasets:[{
+
+label:"Candidate Performance",
+
+data:[
+
+{{ score }},
+
+{{ skill_percentage }},
+
+{{ project_count * 10 }},
+
+70,
+
+{{ ats_score }}
+
+],
+
+borderColor:"#38bdf8",
+
+backgroundColor :"rgba(56,189,248,0.15)",
+
+fill:true,
+
+tension:0.4,
+
+pointBackgroundColor:"#8b5cf6",
+
+pointRadius:4,
+
+borderWidth:3
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+maintainAspectRatio:false,
+
+plugins:{
+
+legend:{
+
+display:false
+
+}
+
+},
+
+scales:{
+
+y:{
+
+beginAtZero:true,
+
+max:100,
+
+grid:{
+
+color:"rgba(255,255,255,0.08)"
+
+},
+
+ticks:{
+
+color:"#ffffff"
+
+}
+
+},
+
+x:{
+
+grid:{
+
+display:false
+
+},
+
+ticks:{
+
+color:"#ffffff"
+
+}
+
+}
+
+}
+
+}
+
+});
+
+/* ===========================
+   Skill Distribution
+=========================== */
+
+new Chart(document.getElementById("skillChart"),{
+
+type:"bar",
+
+data:{
+
+labels:[
+
+"Python",
+
+"SQL",
+
+"Machine Learning",
+
+"Power BI",
+
+"Tableau"
+
+],
+
+datasets:[{
+
+data:[
+
+90,
+
+80,
+
+75,
+
+70,
+
+65
+
+],
+
+backgroundColor:[
+
+"#38bdf8",
+
+"#8b5cf6",
+
+"#22c55e",
+
+"#f97316",
+
+"#ec4899"
+
+],
+
+borderRadius:10,
+
+borderSkipped:false,
+
+barThickness:28
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+maintainAspectRatio:false,
+
+plugins:{
+
+legend:{
+
+display:false
+
+}
+
+},
+
+scales:{
+
+y:{
+
+beginAtZero:true,
+
+max:100,
+
+grid:{
+
+color:"rgba(255,255,255,.08)"
+
+},
+
+ticks:{
+
+color:"#ffffff"
+
+}
+
+},
+
+x:{
+
+grid:{
+
+display:false
+
+},
+
+ticks:{
+
+color:"#ffffff"
+
+}
+
+}
+
+}
+
+}
+
+});
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Screening</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+<div class="hero">
+
+    <div class="left">
+
+        <span class="badge">
+            <i class="fa-solid fa-robot"></i> AI Powered Recruitment
+        </span>
+
+        <h1>
+            AI Resume Screening
+            <span>& Candidate Analytics</span>
+        </h1>
+
+        <p>
+            Upload your resume and let Artificial Intelligence evaluate your
+            profile instantly using Machine Learning.
+        </p>
+
+        <div class="features">
+
+            <div><i class="fa-solid fa-circle-check"></i> Resume Parsing</div>
+
+            <div><i class="fa-solid fa-circle-check"></i> Skill Analysis</div>
+
+            <div><i class="fa-solid fa-circle-check"></i> Candidate Prediction</div>
+
+            <div><i class="fa-solid fa-circle-check"></i> ATS Friendly Screening</div>
+
+        </div>
+
+    </div>
+
+    <div class="right">
+
+        <div class="upload-card">
+
+            <i class="fa-solid fa-file-lines upload-icon"></i>
+
+            <h2>Upload Resume</h2>
+
+            <p>PDF & DOCX Supported</p>
+
+            <form action="{{ url_for('predict') }}" method="POST" enctype="multipart/form-data">
+
+                <label class="upload-box">
+
+                    <input type="file"
+                           name="resume"
+                           accept=".pdf,.docx"
+                           required>
+
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                    <span>Select Resume</span>
+
+                </label>
+
+                <button type="submit">
+
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                    Analyze Resume
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

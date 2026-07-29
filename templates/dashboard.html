@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Recruiter Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#0f172a,#1e3a8a,#312e81);
+    padding:40px;
+    color:white;
+}
+
+h1{
+    text-align:center;
+    margin-bottom:30px;
+    font-size:38px;
+}
+
+.cards{
+
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+    margin-bottom:35px;
+
+}
+
+.card{
+
+    background:rgba(255,255,255,.10);
+    backdrop-filter:blur(10px);
+    border-radius:18px;
+    padding:25px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,.35);
+
+}
+
+.card h2{
+
+    font-size:36px;
+    margin-bottom:10px;
+    color:#38bdf8;
+
+}
+
+.card p{
+
+    font-size:16px;
+
+}
+
+.table-box{
+
+    background:white;
+    border-radius:20px;
+    padding:25px;
+    overflow-x:auto;
+
+}
+
+table{
+
+    width:100%;
+    border-collapse:collapse;
+
+}
+
+th{
+
+    background:#2563eb;
+    color:white;
+    padding:15px;
+
+}
+
+td{
+
+    padding:12px;
+    text-align:center;
+    border-bottom:1px solid #ddd;
+    color:#333;
+
+}
+
+tr:hover{
+
+    background:#f4f7ff;
+
+}
+
+.status-short{
+
+    color:green;
+    font-weight:bold;
+
+}
+
+.status-reject{
+
+    color:red;
+    font-weight:bold;
+
+}
+
+.delete{
+
+    background:#ef4444;
+    color:white;
+    text-decoration:none;
+    padding:8px 18px;
+    border-radius:8px;
+
+}
+
+.delete:hover{
+
+    background:#dc2626;
+
+}
+
+.home{
+
+    margin-top:35px;
+    text-align:center;
+
+}
+
+.home a{
+
+    background:#2563eb;
+    color:white;
+    padding:14px 28px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:600;
+
+}
+
+.home a:hover{
+
+    background:#1d4ed8;
+
+}
+
+@media(max-width:900px){
+
+.cards{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}
+
+@media(max-width:600px){
+
+.cards{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>🤖 AI Resume Screening Recruiter Dashboard</h1>
+
+<div class="cards">
+
+<div class="card">
+
+<h2>{{ total }}</h2>
+<p>Total Candidates</p>
+
+</div>
+
+<div class="card">
+
+<h2>{{ shortlisted }}</h2>
+<p>Shortlisted</p>
+</div>
+
+<div class="card">
+
+<h2>{{ rejected }}</h2>
+<p>Rejected</p>
+
+</div>
+
+<div class="card">
+
+<h2>{{ average }}%</h2>
+<p>Average Resume Score</p>
+</div>
+
+</div>
+
+<div class="table-box">
+
+<table>
+
+<tr>
+    <th>ID</th>
+    <th>Resume</th>
+    <th>Name</th>
+    <th>Education</th>
+    <th>Experience</th>
+    <th>Resume Score</th>
+    <th>Skill Match</th>
+    <th>Status</th>
+    <th>Uploaded</th>
+    <th>Action</th>
+</tr>
+
+{% for candidate in candidates %}
+
+<tr>
+
+    <td>{{ candidate.id }}</td>
+
+    <td>{{ candidate.filename }}</td>
+
+    <td>{{ candidate.name }}</td>
+
+    <td>{{ candidate.education }}</td>
+
+    <td>{{ candidate.experience }}</td>
+
+    <td>{{ candidate.resume_score }}%</td>
+
+    <td>{{ candidate.skill_match }}%</td>
+
+    <td>
+
+        {% if candidate.prediction == "Shortlisted" %}
+
+        <span style="color:green;font-weight:bold;">
+            ✅ Shortlisted
+        </span>
+
+        {% else %}
+
+        <span style="color:red;font-weight:bold;">
+            ❌ Not Shortlisted
+        </span>
+
+        {% endif %}
+
+    </td>
+
+    <td>{{ candidate.upload_time }}</td>
+
+    <td>
+
+        <a href="/delete/{{ candidate.id }}" class="delete">
+            Delete
+        </a>
+
+    </td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+<div class="home">
+
+<a href="/">⬅ Back to Resume Screening</a>
+
+</div>
+
+</body>
+
+</html>
